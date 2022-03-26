@@ -6,24 +6,28 @@ double b = 0.00022647;
 double c = 0.18481;
 double d = 33.136;
 
-int sensorValue = 0;
+int ntcSensorValue = 0;
+const int MQ5PIN = 7;
 const int ARRAYSIZE = 16;
 double temp, sum, val, average = 0;
 double temps[ARRAYSIZE];
 
 void setup() {
 
+  pinMode(MQ5PIN, INPUT);
   pinMode(2, INPUT);
   pinMode(3, OUTPUT);
 
-  mySerial.begin(9600);
-  //Serial.begin(9600);
+  //mySerial.begin(9600);
+  Serial.begin(9600);
+  delay(20000);       //    Annetaan MQ5 -sensorin lämmetä ennen ohjelman alkua
 }
 
 void loop() {
   
   val = sumOfTemperatures();
   printAverageTemperature(val);
+  getGasValue();
   clearVariableValues();
   delay(2000);   
 }
@@ -42,21 +46,28 @@ double sumOfTemperatures() {
 }
 
 double getTemperature() {
-  sensorValue = analogRead(A0);
+  ntcSensorValue = analogRead(A0);
 
-  temp = (a*sensorValue*sensorValue*sensorValue) - (b*sensorValue*sensorValue) + c*sensorValue - d; 
+  temp = (a*ntcSensorValue*ntcSensorValue*ntcSensorValue) - (b*ntcSensorValue*ntcSensorValue) + c*ntcSensorValue - d; 
   return temp;
 }
 
 void printAverageTemperature(double val) {
   average = val / ARRAYSIZE;
-  //Serial.println(average);
-  
+  Serial.print(average);
+  Serial.print(" ");
+  /*
   if (mySerial.available() > 0) {
      mySerial.println(average); 
      //mySerial.print(temp);
   }
-  
+  */
+}
+
+void getGasValue() {
+  float gas = digitalRead(MQ5PIN);
+  Serial.print(gas);
+  Serial.println();
 }
 
 void clearVariableValues() {
