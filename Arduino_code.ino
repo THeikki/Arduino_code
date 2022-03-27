@@ -20,7 +20,7 @@ void setup() {
 
   //mySerial.begin(9600);
   Serial.begin(9600);
-  delay(20000);       //    Annetaan MQ5 -sensorin lämmetä ennen ohjelman alkua
+  delay(60000);       //    Annetaan MQ5 -sensorin lämmetä ennen ohjelman alkua
 }
 
 void loop() {
